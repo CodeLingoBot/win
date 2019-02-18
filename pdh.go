@@ -189,7 +189,7 @@ func init() {
 	pdh_ValidatePathW = libpdhDll.MustFindProc("PdhValidatePathW")
 }
 
-// Adds the specified counter to the query. This is the internationalized version. Preferably, use the
+// PdhAddCounter adds the specified counter to the query. This is the internationalized version. Preferably, use the
 // function PdhAddEnglishCounter instead. hQuery is the query handle, which has been fetched by PdhOpenQuery.
 // szFullCounterPath is a full, internationalized counter path (this will differ per Windows language version).
 // dwUserData is a 'user-defined value', which becomes part of the counter information. To retrieve this value
@@ -238,7 +238,7 @@ func PdhAddCounter(hQuery PDH_HQUERY, szFullCounterPath string, dwUserData uintp
 	return uint32(ret)
 }
 
-// Adds the specified language-neutral counter to the query. See the PdhAddCounter function. This function only exists on
+// PdhAddEnglishCounter adds the specified language-neutral counter to the query. See the PdhAddCounter function. This function only exists on
 // Windows versions higher than Vista.
 func PdhAddEnglishCounter(hQuery PDH_HQUERY, szFullCounterPath string, dwUserData uintptr, phCounter *PDH_HCOUNTER) uint32 {
 	if pdh_AddEnglishCounterW == nil {
@@ -332,7 +332,7 @@ func PdhGetFormattedCounterValueLong(hCounter PDH_HCOUNTER, lpdwType *uint32, pV
 	return uint32(ret)
 }
 
-// Returns an array of formatted counter values. Use this function when you want to format the counter values of a
+// PdhGetFormattedCounterArrayDouble returns an array of formatted counter values. Use this function when you want to format the counter values of a
 // counter that contains a wildcard character for the instance name. The itemBuffer must a slice of type PDH_FMT_COUNTERVALUE_ITEM_DOUBLE.
 // An example of how this function can be used:
 //
@@ -380,7 +380,7 @@ func PdhGetFormattedCounterArrayDouble(hCounter PDH_HCOUNTER, lpdwBufferSize *ui
 	return uint32(ret)
 }
 
-// Returns an array of formatted counter values. Use this function when you want to format the counter values of a
+// PdhGetFormattedCounterArrayLarge returns an array of formatted counter values. Use this function when you want to format the counter values of a
 // counter that contains a wildcard character for the instance name. The itemBuffer must a slice of type PDH_FMT_COUNTERVALUE_ITEM_LARGE.
 // For an example usage, see PdhGetFormattedCounterArrayDouble.
 func PdhGetFormattedCounterArrayLarge(hCounter PDH_HCOUNTER, lpdwBufferSize *uint32, lpdwBufferCount *uint32, itemBuffer *PDH_FMT_COUNTERVALUE_ITEM_LARGE) uint32 {
@@ -394,7 +394,7 @@ func PdhGetFormattedCounterArrayLarge(hCounter PDH_HCOUNTER, lpdwBufferSize *uin
 	return uint32(ret)
 }
 
-// Returns an array of formatted counter values. Use this function when you want to format the counter values of a
+// PdhGetFormattedCounterArrayLong returns an array of formatted counter values. Use this function when you want to format the counter values of a
 // counter that contains a wildcard character for the instance name. The itemBuffer must a slice of type PDH_FMT_COUNTERVALUE_ITEM_LONG.
 // For an example usage, see PdhGetFormattedCounterArrayDouble.
 //
@@ -426,7 +426,7 @@ func PdhOpenQuery(szDataSource uintptr, dwUserData uintptr, phQuery *PDH_HQUERY)
 	return uint32(ret)
 }
 
-// Validates a path. Will return ERROR_SUCCESS when ok, or PDH_CSTATUS_BAD_COUNTERNAME when the path is
+// PdhValidatePath validates a path. Will return ERROR_SUCCESS when ok, or PDH_CSTATUS_BAD_COUNTERNAME when the path is
 // erroneous.
 func PdhValidatePath(path string) uint32 {
 	ptxt, _ := syscall.UTF16PtrFromString(path)
